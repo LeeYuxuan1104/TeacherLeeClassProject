@@ -14,6 +14,9 @@ public class MTConfiger {
 	public static String FAIL="fail";
 	public static int USER_RESIGN=1;
 	public static int USER_LOGIN=2;
+	public static int USER_QUERY_PAGE_CONDITION=3;
+	public static int USER_DEL_ALL=4;
+	public static int USER_DEL_ITEM=5;
 	
 	public MTConfiger() {
 	

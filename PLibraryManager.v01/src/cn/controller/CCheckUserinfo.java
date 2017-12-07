@@ -21,7 +21,7 @@ public class CCheckUserinfo extends HttpServlet{
 		MUserinfo		userinfo=	null;
 		int 			operType=	Integer.parseInt(req.getParameter("opertype"));
 		String  		sResult =   "fail";
-		String 			uid,uname,upwd,urole,note,img=null,phone,email;
+		String 			id,uid,uname,upwd,urole,note,img=null,phone,email;
 		/////
 		switch (operType) {
 		///	注册;
@@ -47,7 +47,24 @@ public class CCheckUserinfo extends HttpServlet{
 			break;
 		///	显示前10条信息;
 		case 3:
-			
+			int nCurrentPage=Integer.parseInt(req.getParameter("currentpage"));
+			int nCountLimit =Integer.parseInt(req.getParameter("countlimit"));
+			String pkind	=new String(req.getParameter("pkind").getBytes("ISO8859_1"),"utf-8");
+			String value	=new String(req.getParameter("value").getBytes("ISO8859_1"),"utf-8");
+			userinfo=	new MUserinfo();
+			sResult =	userinfo.queryUserinfoByPageAndCondition(nCurrentPage, nCountLimit, pkind, value);
+			break;
+		///	清空操作;
+		case 4:
+			userinfo=	new MUserinfo();
+			sResult =	userinfo.delAll();
+			break;
+		///	单条删除;
+		case 5:
+			id		=	new String(req.getParameter("id").getBytes("ISO8859_1"),"utf-8");
+			userinfo=	new MUserinfo();
+			sResult =	userinfo.delItem(id);
+			break;
 		default:
 			break;
 		}

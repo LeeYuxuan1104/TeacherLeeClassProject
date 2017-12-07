@@ -21,8 +21,24 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="5sp"
+        android:layout_marginTop="5sp" />
+
+    <Button
+        android:id="@+id/btnFunction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5sp"
         android:layout_marginTop="5sp"
-        android:text="返回"
-        />
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnOther"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5sp"
+        android:layout_marginTop="5sp"
+        android:layout_toLeftOf="@id/btnFunction"
+        android:visibility="gone" />
 
 </RelativeLayout>

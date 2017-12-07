@@ -7,13 +7,19 @@
 
     <string name="success">成功</string>
     <string name="fail">失败</string>
+    <string name="nodata">无新数据</string>
+    <string name="update">数据更新</string>
     <string name="ok">确定</string>
     <string name="exit">退出</string>
     <string name="back">返回</string>
+    <string name="delall">清空</string>
+    <string name="delitem">删除</string>
     <string name="no">取消</string>
     <string name="complete">请补充完整</string>
     <string name="login">登录</string>
     <string name="resign">注册</string>
+    <string name="search">搜索</string>
+    <string name="detail">详情</string>
     
     <string name="wait">请等待</string>
     <string name="doing">正在操作</string>

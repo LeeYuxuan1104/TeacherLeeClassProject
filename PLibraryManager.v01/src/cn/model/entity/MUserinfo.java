@@ -1,5 +1,9 @@
 package cn.model.entity;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import net.sf.json.JSONArray;
@@ -78,10 +82,61 @@ public class MUserinfo {
 		}
 		return "fail";
 	}
+
 	//	翻页显示信息;
+	public String queryUserinfoByPageAndCondition(int nCurrentPage,int nCountLimit,String pkind,String value){
+		int nCPage=nCurrentPage-1;
+		int nItem =nCPage*nCountLimit;
+		String where=" where "+pkind+" like '%"+value+"%' limit "+nItem+","+nCountLimit;
+		if(value.equals("null")){
+			where=" limit "+nItem+","+nCountLimit;
+		}
+		String 				sql	 = "select * from user_info "+where;
+		System.out.println(sql);
+		ArrayList<String[]> list = mtDBTool.query(sql);
+		JSONArray   		array= new JSONArray();
+		if(list!=null){
+			int 	nSize	=	list.size();
+			if(nSize!=0){				
+				for(String[] items:list){
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("id", items[0]);
+						obj.put("uid", items[1]);
+						obj.put("uname", items[2]);
+						obj.put("upwd", items[3]);
+						obj.put("urole", items[4]);
+						obj.put("note", items[5]);
+						obj.put("img", items[6]);
+						obj.put("phone", items[7]);
+						obj.put("email", items[8]);
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					array.add(obj);
+				}
+				return array.toString();
+			}
+		}
+		return "fail";
+	}
 	
+	public String delAll(){
+		String sql="delete from user_info";
+		if(this.mtDBTool.doDBUpdate(sql)!=0){
+			return "ok";
+		}
+		return "fail";
+	}
 	
-	
+	public String delItem(String id){
+		String sql="delete from user_info where id="+id;
+		if(this.mtDBTool.doDBUpdate(sql)!=0){
+			return "ok";
+		}
+		return "fail";
+	}
 	//数据的属性的抓取;
 	public int getId() {
 		return id;

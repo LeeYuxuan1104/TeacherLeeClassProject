@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="#ffffff" >
 
-      <LinearLayout
+    <LinearLayout
         android:id="@+id/layButtom"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
         android:background="#D1EEEE"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        android:gravity="center"
         android:orientation="horizontal" >
 
         <Button
@@ -21,15 +20,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/uppage" />
-		<EditText 
-		    android:id="@+id/etPage"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
-		    android:text="页数"
-		    android:editable="false"
-		    android:enabled="false"
-		    />
+
+        <EditText
+            android:id="@+id/etPage"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:editable="false"
+            android:enabled="false"
+            android:gravity="center"
+            tools:ignore="TextFields,Deprecated" />
+
         <Button
             android:id="@+id/btnDownPage"
             android:layout_width="fill_parent"
@@ -37,11 +38,46 @@
             android:layout_weight="1"
             android:text="@string/downpage" />
     </LinearLayout>
-	<ListView 
-	    android:id="@+id/listView"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:layout_above="@id/layButtom"
-	    >
-	</ListView>
+
+    <RelativeLayout
+        android:id="@+id/laySearch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" >
+
+        <Spinner
+            android:id="@+id/spKind"
+            android:layout_width="wrap_content"
+            android:layout_height="45sp"
+            android:layout_alignParentLeft="true" />
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/search" />
+
+        <EditText
+            android:id="@+id/etValue"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/btnSearch"
+            android:layout_toRightOf="@id/spKind"
+            android:inputType="text" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/layButtom"
+        android:layout_below="@id/laySearch" 
+        android:cacheColorHint="#000000"
+        android:background="#ffffff"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        >
+    </ListView>
+
 </RelativeLayout>

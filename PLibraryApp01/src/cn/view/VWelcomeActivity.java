@@ -149,7 +149,7 @@ public class VWelcomeActivity extends Activity implements OnClickListener{
 				
 			}
 
-			if (response.equalsIgnoreCase("fail")) {
+			if (response.trim().equalsIgnoreCase("fail")) {
 				nFlag = 2;
 			}
 			mHandler.sendEmptyMessage(nFlag);
