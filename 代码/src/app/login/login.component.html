@@ -1,0 +1,41 @@
+<div class="col-sm-8 col-md-4 col-lg-4 col-sm-offset-2 col-md-offset-4 col-lg-offset-4 formpage center-vertical" >
+  <form [formGroup]="loginForm" (submit)="onSubmit()">
+    <div class="row">
+      <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+        <span class="heading">用户登录</span>
+        <div class="input-group">
+					<span class="input-group-addon">
+            <img src="./assets/img/usr.png" height="20" width="20" >
+					</span>
+          <input type="text" class="form-control" formControlName="username">
+
+        </div><!-- /input-group -->
+
+      </div><!-- /.col-lg-6 -->
+    </div>
+    <div class="row">
+      <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+        <div style="height: 25px;color: red">
+          <div *ngIf="state==0">
+          </div>
+          <div *ngIf="state==1">
+            用户名不能为空
+          </div>
+          <div *ngIf="state==2">
+            用户名长度错误
+          </div>
+          <div *ngIf="state==3">
+            用户名应为纯数字
+          </div>
+        </div>
+        <div class="input-group">
+					<span class="input-group-addon">
+            <img src="./assets/img/pwd.png" height="18" width="18" >
+					</span>
+          <input type="password" class="form-control " formControlName="psw">
+        </div><!-- /input-group -->
+        <button type="submit" class="btn btn-primary" >登 录</button>
+      </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+  </form>
+</div>

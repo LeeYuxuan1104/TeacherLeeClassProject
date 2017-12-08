@@ -1,0 +1,17 @@
+<table  style="text-align: center;width: 100%">
+  <tr >
+    <td>序号</td>
+    <td>书名</td>
+    <td>出版社</td>
+    <td>借阅人</td>
+    <td>借阅时间</td>
+    <td>操作</td>
+  </tr>
+  <tr *ngFor="let book of books">
+    <td>{{book.id}}</td>
+    <td>{{book.name}}</td>
+    <td>{{book.publisher}}</td>
+    <td>{{book.num}}</td>
+    <td><a style="cursor:pointer;" (click)="deleteBook(book)">还书</a></td>
+  </tr>
+</table>

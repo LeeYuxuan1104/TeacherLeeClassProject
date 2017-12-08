@@ -1,0 +1,38 @@
+<div style="margin-top: 10px">
+  <form name="searchForm" role="form" >
+    <div class="form-group" style="text-align: center">
+      <label for="productTitle">书名：</label>
+      <input type="text" id="productTitle" placeholder="图书名称" class="form-control input">
+      <label for="productPrice">作者：</label>
+      <input type="text" id="productPrice" placeholder="作者名称" class="form-control input">
+
+      <button type="submit" class="btn btn-primary btn-xs">搜索</button>
+    </div>
+  </form>
+</div>
+<div *ngFor="let book of books" class="col-md-4 col-sm-4 col-lg-4">
+  <div class="thumbnail">
+    <img src={{book.img}}>
+    <div>
+      <h4><a>《{{book.name}}》</a></h4>
+      <p>{{book.author}}</p>
+      <p>{{book.press}}</p>
+    </div>
+  </div>
+</div>
+<!--<table  style="text-align: center;width: 100%">-->
+  <!--<tr >-->
+    <!--<td>序号</td>-->
+    <!--<td>书名</td>-->
+    <!--<td>出版社</td>-->
+    <!--<td>数量</td>-->
+    <!--<td>操作</td>-->
+  <!--</tr>-->
+  <!--<tr *ngFor="let book of books">-->
+    <!--<td>{{book.id}}</td>-->
+    <!--<td>{{book.name}}</td>-->
+    <!--<td>{{book.publisher}}</td>-->
+    <!--<td>{{book.num}}</td>-->
+    <!--<td><a style="cursor:pointer;" (click)="deleteBook(book)">删除</a></td>-->
+  <!--</tr>-->
+<!--</table>-->
