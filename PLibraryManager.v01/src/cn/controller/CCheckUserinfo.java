@@ -65,6 +65,12 @@ public class CCheckUserinfo extends HttpServlet{
 			userinfo=	new MUserinfo();
 			sResult =	userinfo.delItem(id);
 			break;
+		case 6:
+		case 7:
+			id		=	new String(req.getParameter("id").getBytes("ISO8859_1"),"utf-8");
+			userinfo=	new MUserinfo();
+			sResult =	userinfo.queryUserinfoItem(id);
+			break;
 		default:
 			break;
 		}

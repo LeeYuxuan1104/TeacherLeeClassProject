@@ -1,9 +1,11 @@
 package cn.view;
 
+import java.util.Map;
+
 import com.example.plibraryapp01.R;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,9 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class VUserDetailActivity extends Activity implements OnClickListener{
-	private Context	 mContext;
-	private Button	 vBack,vFunction;
-	private TextView vTopic;
+	private Button	 vBack;
+	private TextView vTopic,vDetail;
 	
 	
 	@Override
@@ -26,13 +27,33 @@ public class VUserDetailActivity extends Activity implements OnClickListener{
 	
 	private void initView(){
 		vBack=(Button) findViewById(R.id.btnBack);
-		vFunction=(Button) findViewById(R.id.btnFunction);
+		vTopic=(TextView) findViewById(R.id.tvTopic);
 	}
 	private void initEvent(){
-		mContext=VUserDetailActivity.this;
 		vBack.setText(R.string.back);
-		vFunction.setText(R.string.delall);
+		vBack.setOnClickListener(this);
 		vTopic.setText(R.string.detail);
+		vDetail=(TextView) findViewById(R.id.detail);
+		Intent intent=getIntent();
+		Bundle bundle=intent.getExtras();
+		@SuppressWarnings("unchecked")
+		Map<String, String> map=(Map<String, String>) bundle.getSerializable("item");
+		String uid 		 = map.get("uid");
+		String uname 	 = map.get("uname");
+		String upwd 	 = map.get("upwd");
+		String urole 	 = map.get("urole");
+		String note	 	 = map.get("note");
+		String phone 	 = map.get("phone");
+		String email 	 = map.get("email");
+		String item		 = "用户编号:"+uid+"\r\n" +
+						   "用户名称:"+uname+"\r\n" +
+						   "用户密码:"+upwd+"\r\n"+
+						   "用户角色:"+urole+"\r\n"+
+						   "用户备注:\r\n"+note+"\r\n" +
+						   "联系电话:"+phone+"\r\n" +
+						   "邮件:"+email
+						   ;
+		vDetail.setText(item);
 	}
 
 	@Override
@@ -42,7 +63,6 @@ public class VUserDetailActivity extends Activity implements OnClickListener{
 		case R.id.btnBack:
 			finish();
 			break;
-
 		default:
 			break;
 		}

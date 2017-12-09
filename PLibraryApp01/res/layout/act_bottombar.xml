@@ -72,12 +72,12 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@id/layButtom"
-        android:layout_below="@id/laySearch" 
-        android:cacheColorHint="#000000"
-        android:background="#ffffff"
+        android:layout_below="@id/laySearch"
         android:layout_marginLeft="5sp"
         android:layout_marginRight="5sp"
-        >
+        android:background="#ffffff"
+        android:cacheColorHint="#00000000"
+        android:scrollingCache="false" >
     </ListView>
 
 </RelativeLayout>

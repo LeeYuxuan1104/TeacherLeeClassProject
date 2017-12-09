@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PLibraryApp01</string>
+    <string name="app_name">图书管理通</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 
@@ -42,4 +42,12 @@
     <string name="menuinfo">主菜单</string>
     <string name="uppage">上一页</string>
     <string name="downpage">下一页</string>
+    
+    <string name="kid">大类编号</string>
+    <string name="kname">大类名称</string>
+    
+    <string name="choosetime">选择时间</string>
+    <string name="isnull">已空</string>
+    
+    
 </resources>

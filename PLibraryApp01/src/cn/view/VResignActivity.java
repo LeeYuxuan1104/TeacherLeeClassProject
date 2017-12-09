@@ -91,6 +91,7 @@ public class VResignActivity extends Activity implements OnClickListener{
     	
     	//	初始化页面内容;
     	vTopic.setText(R.string.resign);
+    	vBack.setText(R.string.back);
     	//	添加事件监听;
     	vBack.setOnClickListener(this);
     	vOk.setOnClickListener(this);

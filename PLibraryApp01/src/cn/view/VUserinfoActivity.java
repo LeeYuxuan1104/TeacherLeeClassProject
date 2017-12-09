@@ -1,6 +1,7 @@
 package cn.view;
 
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +30,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -47,8 +50,6 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 	private Spinner  vuserkind;
 	private EditText vValue,vPage;
 	private ListView vlistView;
-	//
-	private ArrayAdapter<String> adapter;
 	
 	//	进行线程控件;
 	private ProgressDialog 	vDialog; // 对话方框;
@@ -57,11 +58,13 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 	private MTConfiger mtConfiger;
 	private int 	   nUpOrDown=1; 
 	private ArrayList<Map<String, String>> listdata;
+	//	适配器内容;
+	private ArrayAdapter<String> adapter;
 	private SimpleAdapter	mAdapter;
-	//	参数
+	//	参数值信息;
 	private String[] names={"用户编号","用户名称","用户权限"};
 	private String[] kinds={"uid","uname","urole"};
-	//
+	//	参数的初始化;
 	private int nCurrentPage=1;
 	private int nCountLimit=2;
 	private String value=" ";
@@ -82,9 +85,11 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 			case 2:
 				Toast.makeText(mContext, R.string.nodata, Toast.LENGTH_LONG).show();
 				switch ( nUpOrDown) {
+				//	上一页;				
 				case 1:
 					nCurrentPage++;
 					break;
+				//	下一页;
 				case 2:					
 					nCurrentPage--;
 					break;
@@ -127,8 +132,7 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 	private void initEvent(){
 		mContext	=	VUserinfoActivity.this;
 		mtConfiger	=	new MTConfiger();
-		
-		
+			
 		vBack.setText(R.string.back);
 		vTopic.setText(R.string.userinfo);
 		vBack.setOnClickListener(this);
@@ -139,9 +143,10 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 		vFunction.setText(R.string.delall);
 		vFunction.setOnClickListener(this);
 		
+		vPage.setText("第0页");
 		adapter=new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, names);
 		vuserkind.setAdapter(adapter);
-		
+		//增加事件监听;
 		vuserkind.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -149,6 +154,7 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 					int position, long arg3) {
 				
 				pkind=kinds[position];
+				vValue.setText("");
 			}
 
 			@Override
@@ -158,21 +164,17 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 			}
 		});
 		
-		if(myThread==null){
-			final CharSequence strDialogTitle = getString(R.string.wait);
-			final CharSequence strDialogBody = getString(R.string.doing);
-			vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
-			myThread=new MyThread(nCurrentPage, nCountLimit, "","null","null",0);
-			myThread.start();
-		}
-		
 		//	输入框变化的内容;
 		vValue.addTextChangedListener(new TextWatcher() {
 			
 			@Override
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-				nCurrentPage=1;
-				listdata.clear();
+				nCurrentPage=0;
+				if(listdata!=null){					
+					listdata.clear();
+					listdata=null;
+					vPage.setText("第"+nCurrentPage+"页");
+				}
 			}
 			
 			@Override
@@ -188,7 +190,7 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 				
 			}
 		});
-		//	列表显示的内容;
+		//	列表长按显示的内容;
 		vlistView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
@@ -217,17 +219,34 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 				return false;
 			}
 		});
+		//	列表单点
+		vlistView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view, int position,
+					long id) {
+				Intent	intent=new Intent(mContext, VUserDetailActivity.class);
+				Bundle  bundle=new Bundle();
+				Map<String, String> map= listdata.get(position);
+				bundle.putSerializable("item", (Serializable) map);
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		});
 		
 	}
 
 	private void loadData(){
-		mAdapter=new SimpleAdapter(mContext, listdata, R.layout.act_item, new String[]{"number","content","id"}, new int []{R.id.number,R.id.content,R.id.id});
-		vlistView.setAdapter(mAdapter);
+		if(listdata!=null){
+			mAdapter=new SimpleAdapter(mContext, listdata, R.layout.act_item, new String[]{"number","content","id"}, new int []{R.id.number,R.id.content,R.id.id});
+			vlistView.setAdapter(mAdapter);
+		}else nCurrentPage=0;
 	}
 
 	@Override
 	public void onClick(View view) {
 		int nVid=view.getId();
+		value=mtConfiger.docheckEditView(vValue);
 		switch (nVid) {
 		//	返回键;
 		case R.id.btnBack:
@@ -235,10 +254,9 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 			break;
 		//	搜索键;
 		case R.id.btnSearch:
-			value=mtConfiger.docheckEditView(vValue);
-			nCurrentPage=1;
-			nUpOrDown=0;
-			if(myThread==null){
+			if(myThread==null&&listdata==null){
+				nUpOrDown=0;
+				nCurrentPage=1;
 				final CharSequence strDialogTitle = getString(R.string.wait);
 				final CharSequence strDialogBody = getString(R.string.doing);
 				vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
@@ -249,55 +267,59 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 			break;
 		//	上一页;
 		case R.id.btnUpPage:
-			nUpOrDown=1;
-			value=mtConfiger.docheckEditView(vValue);
-			if(myThread==null){
-				nCurrentPage--;
-				final CharSequence strDialogTitle = getString(R.string.wait);
-				final CharSequence strDialogBody = getString(R.string.doing);
-				vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
-				myThread=new MyThread(nCurrentPage, nCountLimit, pkind, value,"null",0);
-				myThread.start();
-			}	
+			if(listdata!=null){				
+				if(myThread==null){
+					nUpOrDown=1;
+					nCurrentPage--;
+					final CharSequence strDialogTitle = getString(R.string.wait);
+					final CharSequence strDialogBody = getString(R.string.doing);
+					vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
+					myThread= new MyThread(nCurrentPage, nCountLimit, pkind, value,"null",0);
+					myThread.start();
+				}	
+			}
 			
 			break;
 		//	下一页;
 		case R.id.btnDownPage:
-			nUpOrDown=2;
-			value=mtConfiger.docheckEditView(vValue);
-			if(myThread==null){
-				nCurrentPage++;
-				final CharSequence strDialogTitle = getString(R.string.wait);
-				final CharSequence strDialogBody = getString(R.string.doing);
-				vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
-				myThread=new MyThread(nCurrentPage, nCountLimit, pkind, value,"null",0);
-				myThread.start();
+			if(listdata!=null){				
+				if(myThread==null){
+					value=mtConfiger.docheckEditView(vValue);
+					nUpOrDown=2;
+					nCurrentPage++;
+					final CharSequence strDialogTitle = getString(R.string.wait);
+					final CharSequence strDialogBody = getString(R.string.doing);
+					vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
+					myThread=new MyThread(nCurrentPage, nCountLimit, pkind, value,"null",0);
+					myThread.start();
+				}
 			}
 			
 			break;
 		//	清空操作;
 		case R.id.btnFunction:
-			vBuilder=new Builder(mContext);
-			vBuilder.setTitle(R.string.delall);
-			vBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface arg0, int arg1) {
-					if(myThread==null){
-						nCurrentPage=1;
-						nUpOrDown=0;
-						final CharSequence strDialogTitle = getString(R.string.wait);
-						final CharSequence strDialogBody = getString(R.string.doing);
-						vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
-						myThread=new MyThread(nCurrentPage, nCountLimit, pkind, "null","delall",0);
-						myThread.start();
+			if(listdata!=null){				
+				vBuilder=new Builder(mContext);
+				vBuilder.setTitle(R.string.delall);
+				vBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						if(myThread==null){
+							nCurrentPage=0;
+							nUpOrDown=0;
+							final CharSequence strDialogTitle = getString(R.string.wait);
+							final CharSequence strDialogBody = getString(R.string.doing);
+							vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
+							myThread=new MyThread(nCurrentPage, nCountLimit, pkind, "null","delall",0);
+							myThread.start();
+						}
 					}
-				}
-			});
-			vBuilder.setNegativeButton(R.string.no, null);
-			vBuilder.create();
-			vBuilder.show();
-			nCurrentPage=1;
+				});
+				vBuilder.setNegativeButton(R.string.no, null);
+				vBuilder.create();
+				vBuilder.show();
+			}else Toast.makeText(mContext, R.string.isnull, Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;
@@ -307,102 +329,104 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 	
 	//	查询线程
 	// 定义的线程——自定义的线程内容;
-		public class MyThread extends Thread {
-			private MTGetOrPostHelper mGetOrPostHelper;
-			private int 	currentpage,countlimit;
-			private String  pkind,value,order;
-			private int 	id;
-			public MyThread(int currentpage,int countlimit,String pkind,String value,String order,int id) {
-				this.mGetOrPostHelper=new MTGetOrPostHelper();
-				this.currentpage=currentpage;
-				this.countlimit=countlimit;
-				this.pkind=pkind;
-				this.value=value;
-				this.order=order;
-				this.id=id;
-			}
-			@Override
-			public void run() {
-				int nFlag = 1;
-				// 进行相应的登录操作的界面显示;
-				// 01.Http 协议中的Get和Post方法;
-				String url 	  	;
-				String param;
-				String response	 = "fail";
-				try {
-					url	  = "http://"+MTConfiger.IP+":"+MTConfiger.PORT+"/"+MTConfiger.PROGRAM+"/user_info";
-					if(order.equals("delall")){
-						param = 
-						"opertype="+MTConfiger.USER_DEL_ALL;
-						response  = mGetOrPostHelper.sendGet(url, param);
-						listdata.clear();
-					}
-					
-					if(order.equals("delitem")){
-						param = 
-						"opertype="+MTConfiger.USER_DEL_ITEM+"" +
-						"&id="+id;
-						response  = mGetOrPostHelper.sendGet(url, param);
-						listdata.clear();
-					}
-					param = 
-					"opertype="+MTConfiger.USER_QUERY_PAGE_CONDITION+"&" +
-					"currentpage="+currentpage+"&" +
-					"countlimit="+countlimit+"&" +
-					"pkind="+pkind+"&" +
-					"value="+URLEncoder.encode(value,"utf-8");
-					response  = mGetOrPostHelper.sendGet(url, param);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-
-				if (response.trim().equals("fail")) {
-					nFlag = 2;
-				}else{
-					try {
-						listdata		= new ArrayList<Map<String,String>>();
-						JSONArray array = new JSONArray(response);
-						int i = 0;
-						JSONObject obj = null;
-						do {
-							try {
-								// JsonObject的解析;
-								obj 			 = array.getJSONObject(i);
-								int    number	 = i+1;
-								String id 		 = obj.getString("id");
-								String uid 		 = obj.getString("uid");
-								String uname 	 = obj.getString("uname");
-								String upwd 	 = obj.getString("upwd");
-								
-								String urole 	 = obj.getString("urole");
-								String note	 	 = obj.getString("note");
-								String img  	 = obj.getString("img");
-								String phone 	 = obj.getString("phone");
-								String email 	 = obj.getString("email");
-				
-								Map<String, String> map=new HashMap<String, String>();
-								map.put("number", number+"");
-								map.put("id", id);
-								map.put("uid", uid);
-								map.put("uname", uname);
-								map.put("upwd", upwd);
-								map.put("urole", urole);
-								map.put("note", note);
-								map.put("img", img);
-								map.put("phone", phone);
-								map.put("email", email);
-								map.put("content","编号:"+uid+" | 姓名:"+uname+" | 权限:"+urole);
-								listdata.add(map);
-								i++;
-							} catch (Exception e) {
-								obj = null;
-							}
-						} while (obj != null);
-					} catch (JSONException e) {
-						nFlag = 2;
-					}
-				}
-				mHandler.sendEmptyMessage(nFlag);
-			}
+	public class MyThread extends Thread {
+		private MTGetOrPostHelper mGetOrPostHelper;
+		private int 	currentpage,countlimit;
+		private String  pkind,value,order;
+		private int 	id;
+		public MyThread(int currentpage,int countlimit,String pkind,String value,String order,int id) {
+			this.mGetOrPostHelper=new MTGetOrPostHelper();
+			this.currentpage=currentpage;
+			this.countlimit=countlimit;
+			this.pkind=pkind;
+			this.value=value;
+			this.order=order;
+			this.id=id;
 		}
+		@Override
+		public void run() {
+			int nFlag = 1;
+			// 进行相应的登录操作的界面显示;
+			// 01.Http 协议中的Get和Post方法;
+			String url 	  	;
+			String param;
+			String response	 	= "fail";
+			try {
+				url	  			= "http://"+MTConfiger.IP+":"+MTConfiger.PORT+"/"+MTConfiger.PROGRAM+"/user_info";
+				
+				if(order.equals("delall")){
+					param = 
+					"opertype="+MTConfiger.DEL_ALL;
+					
+					response  = mGetOrPostHelper.sendGet(url, param);
+					listdata.clear();
+				}
+				
+				if(order.equals("delitem")){
+					param = 
+					"opertype="+MTConfiger.DEL_ITEM+"" +
+					"&id="+id;
+					response  = mGetOrPostHelper.sendGet(url, param);
+					listdata.clear();
+				}
+				param = 
+				"opertype="+MTConfiger.QUERY_PAGE_CONDITION+"&" +
+				"currentpage="+currentpage+"&" +
+				"countlimit="+countlimit+"&" +
+				"pkind="+pkind+"&" +
+				"value="+URLEncoder.encode(value,"utf-8");
+				response  = mGetOrPostHelper.sendGet(url, param);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
+			if (response.trim().equals("fail")) {
+				nFlag = 2;
+			}else{
+				try {
+					JSONArray array = new JSONArray(response);
+					listdata		= new ArrayList<Map<String,String>>();
+					int i = 0;
+					JSONObject obj = null;
+					do {
+						try {
+							// JsonObject的解析;
+							obj 			 = array.getJSONObject(i);
+							int    number	 = i+1;
+							String id 		 = obj.getString("id");
+							String uid 		 = obj.getString("uid");
+							String uname 	 = obj.getString("uname");
+							String upwd 	 = obj.getString("upwd");
+							
+							String urole 	 = obj.getString("urole");
+							String note	 	 = obj.getString("note");
+							String img  	 = obj.getString("img");
+							String phone 	 = obj.getString("phone");
+							String email 	 = obj.getString("email");
+			
+							Map<String, String> map=new HashMap<String, String>();
+							map.put("number", number+"");
+							map.put("id", id);
+							map.put("uid", uid);
+							map.put("uname", uname);
+							map.put("upwd", upwd);
+							map.put("urole", urole);
+							map.put("note", note);
+							map.put("img", img);
+							map.put("phone", phone);
+							map.put("email", email);
+							map.put("content","编号:"+uid+" | 姓名:"+uname+" | 权限:"+urole);
+							listdata.add(map);
+							i++;
+						} catch (Exception e) {
+							obj = null;
+						}
+					} while (obj != null);
+				} catch (JSONException e) {
+					nFlag = 2;
+				}
+			}
+			mHandler.sendEmptyMessage(nFlag);
+		}
+	}
 }
