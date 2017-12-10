@@ -44,7 +44,7 @@ import android.widget.Toast;
 
 public class VUserinfoActivity extends Activity implements OnClickListener{
 	private Context  mContext;
-	private Button   vBack,vSearch,vUpPage,vDownPage,vFunction;
+	private Button   vBack,vSearch,vUpPage,vDownPage,vDelAll,vAdd;
 	private Builder	 vBuilder;
 	private TextView vTopic;
 	private Spinner  vuserkind;
@@ -127,7 +127,8 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 		vUpPage=(Button) findViewById(R.id.btnUpPage);
 		vDownPage=(Button) findViewById(R.id.btnDownPage);
 		vlistView=(ListView) findViewById(R.id.listView);
-		vFunction=(Button) findViewById(R.id.btnFunction);
+		vDelAll=(Button) findViewById(R.id.btnFunction);
+		vAdd=(Button) findViewById(R.id.btnOther);
 	}
 	private void initEvent(){
 		mContext	=	VUserinfoActivity.this;
@@ -139,9 +140,12 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 		vSearch.setOnClickListener(this);
 		vUpPage.setOnClickListener(this);
 		vDownPage.setOnClickListener(this);
-		vFunction.setVisibility(View.VISIBLE);
-		vFunction.setText(R.string.delall);
-		vFunction.setOnClickListener(this);
+		vDelAll.setVisibility(View.VISIBLE);
+		vDelAll.setText(R.string.delall);
+		vDelAll.setOnClickListener(this);
+		vAdd.setVisibility(View.VISIBLE);
+		vAdd.setText(R.string.add);
+		vAdd.setOnClickListener(this);
 		
 		vPage.setText("第0页");
 		adapter=new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, names);
@@ -252,6 +256,7 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 		case R.id.btnBack:
 			finish();
 			break;
+			
 		//	搜索键;
 		case R.id.btnSearch:
 			if(myThread==null&&listdata==null){
@@ -263,8 +268,8 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 				myThread=new MyThread(nCurrentPage, nCountLimit, pkind, value,"null",0);
 				myThread.start();
 			}
-
 			break;
+			
 		//	上一页;
 		case R.id.btnUpPage:
 			if(listdata!=null){				
@@ -278,8 +283,8 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 					myThread.start();
 				}	
 			}
-			
 			break;
+			
 		//	下一页;
 		case R.id.btnDownPage:
 			if(listdata!=null){				
@@ -294,8 +299,8 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 					myThread.start();
 				}
 			}
-			
 			break;
+			
 		//	清空操作;
 		case R.id.btnFunction:
 			if(listdata!=null){				
@@ -320,6 +325,10 @@ public class VUserinfoActivity extends Activity implements OnClickListener{
 				vBuilder.create();
 				vBuilder.show();
 			}else Toast.makeText(mContext, R.string.isnull, Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.btnOther:
+			Intent intent=new Intent(mContext, VUserAddActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			break;

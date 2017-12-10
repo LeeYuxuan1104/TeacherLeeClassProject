@@ -52,7 +52,6 @@ public class MStateinfo {
 			where=" limit "+nItem+","+nCountLimit;
 		}
 		String 				sql	 = "select * from book_state_info "+where;
-		System.out.println(sql);
 		ArrayList<String[]> list = mtDBTool.query(sql);
 		JSONArray   		array= new JSONArray();
 		if(list!=null){

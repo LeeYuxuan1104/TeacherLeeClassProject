@@ -20,6 +20,9 @@
     <string name="resign">注册</string>
     <string name="search">搜索</string>
     <string name="detail">详情</string>
+    <string name="add">新增</string>
+    <string name="upload">上传</string>
+    <string name="borrow">借阅</string>
     
     <string name="wait">请等待</string>
     <string name="doing">正在操作</string>
@@ -45,7 +48,22 @@
     
     <string name="kid">大类编号</string>
     <string name="kname">大类名称</string>
+    <string name="borrower">借阅人</string>
+    <string name="btime">借阅人</string>
+    <string name="deadline">借阅期限</string>
+    <string name="state">借阅状态</string>
+    <string name="outstate">借出状态</string>
+    <string name="instate">归还状态</string>
+    <string name="in">归还</string>
     
+    <string name="iid">书目编号</string>
+    <string name="iname">书目名称</string>
+    <string name="author">作者名称</string>
+    <string name="press">出版社</string>
+    <string name="ptime">出版日期</string>
+    <string name="count">出版总数</string>
+    
+    <string name="photo">拍照</string>
     <string name="choosetime">选择时间</string>
     <string name="isnull">已空</string>
     

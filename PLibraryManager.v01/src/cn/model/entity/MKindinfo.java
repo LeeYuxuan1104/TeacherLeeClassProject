@@ -49,7 +49,6 @@ public class MKindinfo {
 			where=" limit "+nItem+","+nCountLimit;
 		}
 		String 				sql	 = "select * from kind_book_info "+where;
-		System.out.println(sql);
 		ArrayList<String[]> list = mtDBTool.query(sql);
 		JSONArray   		array= new JSONArray();
 		if(list!=null){
@@ -75,6 +74,30 @@ public class MKindinfo {
 	//	翻页显示信息;
 	public String queryKindinfoItem(String id){
 		String 				sql	 = "select * from kind_book_info where id="+id;
+		ArrayList<String[]> list = mtDBTool.query(sql);
+		JSONArray   		array= new JSONArray();
+		if(list!=null){
+			int 	nSize	=	list.size();
+			if(nSize!=0){				
+				for(String[] items:list){
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("id", items[0]);
+						obj.put("kid", items[1]);
+						obj.put("kname", items[2]);
+						obj.put("note", items[3]);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					array.add(obj);
+				}
+				return array.toString();
+			}
+		}
+		return "fail";
+	}
+	public String queryKindinfoAll(){
+		String 				sql	 = "select * from kind_book_info";
 		ArrayList<String[]> list = mtDBTool.query(sql);
 		JSONArray   		array= new JSONArray();
 		if(list!=null){

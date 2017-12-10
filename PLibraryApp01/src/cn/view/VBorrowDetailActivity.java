@@ -5,6 +5,7 @@ import java.util.Map;
 import com.example.plibraryapp01.R;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,9 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class VBorrowDetailActivity extends Activity implements OnClickListener{
-	private Button	 vBack;
+	private Button	 vBack,vIn;
 	private TextView vTopic,vDetail;
-	
+	private Context	 mContext;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +28,16 @@ public class VBorrowDetailActivity extends Activity implements OnClickListener{
 	
 	private void initView(){
 		vBack=(Button) findViewById(R.id.btnBack);
+		vIn=(Button) findViewById(R.id.btnFunction);
 		vTopic=(TextView) findViewById(R.id.tvTopic);
 	}
 	private void initEvent(){
+		mContext=VBorrowDetailActivity.this;
 		vBack.setText(R.string.back);
+		vIn.setText(R.string.in);
 		vBack.setOnClickListener(this);
+		vIn.setVisibility(View.VISIBLE);
+		vIn.setOnClickListener(this);
 		vTopic.setText(R.string.detail);
 		vDetail=(TextView) findViewById(R.id.detail);
 		Intent intent=getIntent();
@@ -70,6 +76,10 @@ public class VBorrowDetailActivity extends Activity implements OnClickListener{
 		switch (nVid) {
 		case R.id.btnBack:
 			finish();
+			break;
+		case R.id.btnFunction:
+			Intent	intent=new Intent(mContext, VBorrowBackActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			break;

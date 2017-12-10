@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-     <include
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >
+
+    <include
         android:id="@+id/includeTop"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         layout="@layout/act_topbar" />
-	<EditText 
-	    android:id="@+id/etkind"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:hint="@string/kid"
-	    />
-	<EditText 
-	    android:id="@+id/etkname"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:hint="@string/kid"
-	    />
-	<EditText 
-	    android:id="@+id/note"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:hint="@string/note"
-	    />
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layMid"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/etkid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/kid" />
+
+        <EditText
+            android:id="@+id/etkname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/kname" />
+
+        <EditText
+            android:id="@+id/etnote"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/note" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnOk"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/upload" />
+
+</RelativeLayout>

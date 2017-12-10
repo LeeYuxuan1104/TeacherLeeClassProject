@@ -44,7 +44,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class VKindinfoActivity extends Activity implements OnClickListener{
 	private Context  mContext;
-	private Button   vBack,vSearch,vUpPage,vDownPage,vFunction;
+	private Button   vBack,vSearch,vUpPage,vDownPage,vDelall,vAdd;
 	private Builder	 vBuilder;
 	private TextView vTopic;
 	private Spinner  vkindkind;
@@ -126,7 +126,8 @@ public class VKindinfoActivity extends Activity implements OnClickListener{
 		vUpPage=(Button) findViewById(R.id.btnUpPage);
 		vDownPage=(Button) findViewById(R.id.btnDownPage);
 		vlistView=(ListView) findViewById(R.id.listView);
-		vFunction=(Button) findViewById(R.id.btnFunction);
+		vDelall=(Button) findViewById(R.id.btnFunction);
+		vAdd=(Button) findViewById(R.id.btnOther);
 	}
 	
 	private void initEvent(){
@@ -140,9 +141,12 @@ public class VKindinfoActivity extends Activity implements OnClickListener{
 		vSearch.setOnClickListener(this);
 		vUpPage.setOnClickListener(this);
 		vDownPage.setOnClickListener(this);
-		vFunction.setVisibility(View.VISIBLE);
-		vFunction.setText(R.string.delall);
-		vFunction.setOnClickListener(this);
+		vDelall.setVisibility(View.VISIBLE);
+		vAdd.setVisibility(View.VISIBLE);
+		vDelall.setText(R.string.delall);
+		vAdd.setText(R.string.add);
+		vDelall.setOnClickListener(this);
+		vAdd.setOnClickListener(this);
 		
 		vPage.setText("第0页");
 		adapter=new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, names);
@@ -321,6 +325,11 @@ public class VKindinfoActivity extends Activity implements OnClickListener{
 				vBuilder.show();
 			}else Toast.makeText(mContext, R.string.isnull, Toast.LENGTH_SHORT).show();
 			
+			break;
+		//	新增操作;
+		case R.id.btnOther:
+			Intent	intent=new Intent(mContext,VKindAddActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			break;

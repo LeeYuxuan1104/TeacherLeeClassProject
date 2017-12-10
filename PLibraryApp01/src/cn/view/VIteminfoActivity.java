@@ -11,9 +11,10 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import cn.model.tool.MTConfiger;
 import cn.model.tool.MTGetOrPostHelper;
+import cn.model.tool.MTSQLiteHelper;
+
 import com.example.plibraryapp01.R;
 
 import android.annotation.SuppressLint;
@@ -23,6 +24,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,7 +50,7 @@ import android.widget.DatePicker.OnDateChangedListener;
 
 public class VIteminfoActivity extends Activity implements OnClickListener{
 	private Context  mContext;
-	private Button   vBack,vSearch,vUpPage,vDownPage,vFunction;
+	private Button   vBack,vSearch,vUpPage,vDownPage,vDelAll,vAdd;
 	private Builder	 vBuilder;
 	private TextView vTopic;
 	private Spinner  vitemkind;
@@ -59,6 +61,7 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 	private ProgressDialog 	vDialog; // 对话方框;
 	//	自定义类;
 	private MyThread   myThread=null; 
+	private KindThread kindThread=null;
 	private MTConfiger mtConfiger;
 	private int 	   nUpOrDown=1; 
 	private ArrayList<Map<String, String>> listdata;
@@ -73,6 +76,10 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 	private int nCountLimit=2;
 	private String value=" ";
 	private String pkind="";
+	
+	private MTSQLiteHelper 	  mSqLiteHelper;// 数据库的帮助类;
+	private SQLiteDatabase 	  mDB; // 数据库件;
+	
 	//	控制线程;
 	@SuppressLint("HandlerLeak") 
 	Handler mHandler = new Handler() {
@@ -110,6 +117,10 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 				myThread.interrupt();
 				myThread=null;
 			}
+			if(kindThread!=null){
+				kindThread.interrupt();
+				kindThread=null;
+			}
 		}
 	};
 
@@ -119,6 +130,17 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.act_vitem);
 		initView();
 		initEvent();
+	}
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		if(kindThread==null){
+			final CharSequence strDialogTitle = getString(R.string.wait);
+			final CharSequence strDialogBody = getString(R.string.doing);
+			vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
+			kindThread=new KindThread();
+			kindThread.start();
+		}
 	}
 	private void initView(){
 		vBack=(Button) findViewById(R.id.btnBack);
@@ -130,12 +152,15 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 		vUpPage=(Button) findViewById(R.id.btnUpPage);
 		vDownPage=(Button) findViewById(R.id.btnDownPage);
 		vlistView=(ListView) findViewById(R.id.listView);
-		vFunction=(Button) findViewById(R.id.btnFunction);
+		vDelAll=(Button) findViewById(R.id.btnFunction);
+		vAdd=(Button) findViewById(R.id.btnOther);
 	}
 	
 	private void initEvent(){
 		mContext	=	VIteminfoActivity.this;
 		mtConfiger	=	new MTConfiger();
+		mSqLiteHelper = new MTSQLiteHelper(mContext);
+		mDB 		  = mSqLiteHelper.getmDB();
 		
 		vBack.setText(R.string.back);
 		vTopic.setText(R.string.iteminfo);
@@ -143,9 +168,13 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 		vSearch.setOnClickListener(this);
 		vUpPage.setOnClickListener(this);
 		vDownPage.setOnClickListener(this);
-		vFunction.setVisibility(View.VISIBLE);
-		vFunction.setText(R.string.delall);
-		vFunction.setOnClickListener(this);
+		vDelAll.setVisibility(View.VISIBLE);
+		vDelAll.setText(R.string.delall);
+		vDelAll.setOnClickListener(this);
+		vAdd.setVisibility(View.VISIBLE);
+		vAdd.setText(R.string.add);
+		vAdd.setOnClickListener(this);
+
 		vPage.setText("第0页");
 		adapter=new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, names);
 		vitemkind.setAdapter(adapter);
@@ -210,13 +239,15 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 
-						nCurrentPage=1;
-						nUpOrDown=0;
-						final CharSequence strDialogTitle = getString(R.string.wait);
-						final CharSequence strDialogBody = getString(R.string.doing);
-						vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
-						myThread=new MyThread(nCurrentPage, nCountLimit, pkind, "null","delitem",id);
-						myThread.start();
+						if(myThread==null){							
+							nCurrentPage=1;
+							nUpOrDown=0;
+							final CharSequence strDialogTitle = getString(R.string.wait);
+							final CharSequence strDialogBody = getString(R.string.doing);
+							vDialog = ProgressDialog.show(mContext, strDialogTitle,strDialogBody, true);
+							myThread=new MyThread(nCurrentPage, nCountLimit, pkind, "null","delitem",id);
+							myThread.start();
+						}
 					}
 				});
 				vBuilder.setNegativeButton(R.string.no, null);
@@ -239,7 +270,6 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 				startActivity(intent);
 			}
 		});
-		
 	}
 
 	private void loadData(){
@@ -326,11 +356,69 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 				vBuilder.show();
 			}else Toast.makeText(mContext, R.string.isnull, Toast.LENGTH_SHORT).show();
 			break;
+		case R.id.btnOther:
+			Intent	intent	=	new Intent(mContext, VItemAddActivity.class);
+			startActivity(intent);
+			break;
 		default:
 			break;
 		}
 		
 	}
+		public class KindThread extends Thread {
+			private MTGetOrPostHelper mGetOrPostHelper;
+			
+			public KindThread() {
+				this.mGetOrPostHelper=new MTGetOrPostHelper();
+			}
+			@Override
+			public void run() {
+				int nFlag = 1;
+				// 进行相应的登录操作的界面显示;
+				// 01.Http 协议中的Get和Post方法;
+				String url 	  	;
+				String param;
+				String response	 = "fail";
+				
+				url	  	  = "http://"+MTConfiger.IP+":"+MTConfiger.PORT+"/"+MTConfiger.PROGRAM+"/kind_info";
+				param 	  = "opertype="+MTConfiger.Query_All;
+				
+				response  = mGetOrPostHelper.sendGet(url, param);
+
+				String q  = "delete from kind_book_info";
+				mDB.execSQL(q);
+				if (response.trim().equals("fail")) {
+					nFlag = 2;
+				}else{
+					try {
+						JSONArray array = new JSONArray(response);
+						
+						int i = 0;
+						JSONObject obj = null;
+						do {
+							try {
+								// JsonObject的解析;
+								obj 			 = array.getJSONObject(i);	
+								String kid 		 = obj.getString("kid");
+								String kname 	 = obj.getString("kname");
+								String sql		 = "insert into kind_book_info (kid,kname) values ('"+kid+"','"+kname+"')";
+								mDB.execSQL(sql);
+								i++;
+							} catch (Exception e) {
+								obj = null;
+							}
+						} while (obj != null);
+					} catch (JSONException e) {
+						nFlag = 2;
+					}
+				}
+				mHandler.sendEmptyMessage(nFlag);
+			}
+		}
+	
+	
+	
+	
 	
 	//	查询线程
 	// 定义的线程——自定义的线程内容;
@@ -476,4 +564,6 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 		vBuilder.create();
 		vBuilder.show();
 	}
+	
+	
 }

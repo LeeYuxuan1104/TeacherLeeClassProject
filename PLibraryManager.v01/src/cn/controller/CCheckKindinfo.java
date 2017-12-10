@@ -59,6 +59,11 @@ public class CCheckKindinfo extends HttpServlet{
 			kindinfo=	new MKindinfo();
 			sResult =	kindinfo.queryKindinfoItem(id);
 			break;
+		///	全部查询
+		case 8:
+			kindinfo=	new MKindinfo();
+			sResult =	kindinfo.queryKindinfoAll();
+			break;
 		default:
 			break;
 		}

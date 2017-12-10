@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import cn.model.entity.MIteminfo;
+import cn.model.tool.MTConfig;
 
 public class CCheckIteminfo extends HttpServlet{
 	private static final long serialVersionUID = 1L;
@@ -18,6 +19,7 @@ public class CCheckIteminfo extends HttpServlet{
 		/////
 		PrintWriter 	pWriter = 	resp.getWriter();
 		MIteminfo		iteminfo=	null;
+		MTConfig		mtConfig=	null;
 		int 			operType=	Integer.parseInt(req.getParameter("opertype"));
 		String  		sResult =   "fail";
 		String 			id,iid,iname,note,author,press,ptime,count,kid,img=null;
@@ -72,6 +74,12 @@ public class CCheckIteminfo extends HttpServlet{
 			id		=	new String(req.getParameter("id").getBytes("ISO8859_1"),"utf-8");
 			iteminfo=	new	MIteminfo(); 
 			sResult =	iteminfo.queryIteminfoItem(id);
+			break;
+		//	照片;
+		case 8:
+			iid		= 	new String(req.getParameter("iid").getBytes("ISO8859_1"),"utf-8");
+			mtConfig=	new MTConfig();
+			sResult	=	mtConfig.uploadMap(req, "item", iid);
 			break;
 		default:
 			break;

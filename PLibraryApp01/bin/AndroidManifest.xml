@@ -58,6 +58,12 @@
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
+            android:name="cn.view.VUserAddActivity"
+            android:theme="@android:style/Theme.NoTitleBar" 
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
             android:name="cn.view.VKindinfoActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
@@ -76,8 +82,13 @@
         </activity>
         <activity
             android:name="cn.view.VItemDetailActivity"
-            android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="cn.view.VItemAddActivity"
+            android:theme="@android:style/Theme.NoTitleBar" 
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name="cn.view.VBorrowinfoActivity"
@@ -86,6 +97,14 @@
         </activity>
         <activity
             android:name="cn.view.VBorrowDetailActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="cn.view.VBorrowBackActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+         <activity
+            android:name="cn.view.VBorrowOutActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity

@@ -62,7 +62,6 @@ public class MIteminfo {
 			where=" limit "+nItem+","+nCountLimit;
 		}
 		String 				sql	 = "select * from item_book_info "+where;
-		System.out.println("sql="+sql);
 		ArrayList<String[]> list = mtDBTool.query(sql);
 		JSONArray   		array= new JSONArray();
 		if(list!=null){
