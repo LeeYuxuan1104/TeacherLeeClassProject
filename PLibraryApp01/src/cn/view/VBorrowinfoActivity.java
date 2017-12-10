@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,10 +29,12 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -41,6 +44,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.DatePicker.OnDateChangedListener;
 
 public class VBorrowinfoActivity extends Activity implements OnClickListener{
 	private Context  mContext;
@@ -160,6 +164,9 @@ public class VBorrowinfoActivity extends Activity implements OnClickListener{
 				
 				pkind=kinds[position];
 				vValue.setText("");
+				if(pkind.equals("btime")){
+					setViewDate(mContext, vValue);
+				}
 			}
 
 			@Override
@@ -444,4 +451,47 @@ public class VBorrowinfoActivity extends Activity implements OnClickListener{
 			mHandler.sendEmptyMessage(nFlag);
 		}
 	}
+	
+	private String date;
+	private void setViewDate(Context mContext,final EditText etview){
+		Builder    vBuilder   = new Builder(mContext);
+		
+		/*布局控件*/
+		View 	   view 	  = getLayoutInflater().inflate(R.layout.act_datatimepicker, null);
+		vBuilder.setTitle(R.string.choosetime);
+		vBuilder.setView(view);
+		/*时间日期有关控件*/
+		DatePicker datePicker = (DatePicker) view.findViewById(R.id.dpPicker);
+		if (datePicker != null) {
+			((ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0))
+			.getChildAt(2).setVisibility(View.GONE);
+		} 
+		Calendar   calendar   = Calendar.getInstance();
+
+		int 	   nYear 	  = calendar.get(Calendar.YEAR);
+		int 	   nMonth 	  = calendar.get(Calendar.MONTH);
+		int 	   nDay 	  = calendar.get(Calendar.DAY_OF_MONTH);
+		
+		date = nYear + "年" + (nMonth + 1) + "月";
+		datePicker.init(nYear, nMonth, nDay, new OnDateChangedListener() {
+
+			@Override
+			public void onDateChanged(DatePicker view, int year,
+					int monthOfYear, int dayOfMonth) {
+				// 日历控件;
+				date = year + "年" + (monthOfYear + 1) + "月";
+			}
+		});
+		vBuilder.setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				String stime = date;
+				etview.setText(stime);
+			}
+		});
+		vBuilder.create();
+		vBuilder.show();
+	}
+	
 }

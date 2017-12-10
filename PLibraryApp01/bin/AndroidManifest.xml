@@ -25,7 +25,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
+  <!-- 05.1 Android中使用摄像机的权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 05.2 Android中使用摄像机的硬件设备的权限 -->
+    <uses-feature android:name="android.hardware.camera" />
+    <!-- 05.3 Android中使用自动聚焦的权限 -->
+    <uses-feature android:name="android.hardware.camera.autofocus" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -113,6 +118,10 @@
         </activity>
         <activity
             android:name="cn.view.VStateDetailActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="cn.view.FlushActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
     </application>

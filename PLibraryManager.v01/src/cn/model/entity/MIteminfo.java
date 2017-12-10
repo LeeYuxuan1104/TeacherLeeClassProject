@@ -121,6 +121,36 @@ public class MIteminfo {
 		}
 		return "fail";
 	}
+	public String queryIteminfoItem2(String iid){
+		String 				sql	 = "select * from item_book_info where iid="+iid;
+		ArrayList<String[]> list = mtDBTool.query(sql);
+		JSONArray   		array= new JSONArray();
+		if(list!=null){
+			int 	nSize	=	list.size();
+			if(nSize!=0){				
+				for(String[] items:list){
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("id", items[0]);
+						obj.put("iid", items[1]);
+						obj.put("iname", items[2]);
+						obj.put("note", items[3]);
+						obj.put("author", items[4]);
+						obj.put("press", items[5]);
+						obj.put("ptime", items[6]);
+						obj.put("count", items[7]);
+						obj.put("kid", items[8]);
+						obj.put("img", items[9]);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					array.add(obj);
+				}
+				return array.toString();
+			}
+		}
+		return "fail";
+	}
 	public String delAll(){
 		String sql="delete from item_book_info";
 		if(this.mtDBTool.doDBUpdate(sql)!=0){

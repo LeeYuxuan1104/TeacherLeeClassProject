@@ -22,6 +22,7 @@ public class MTConfiger {
 	public static int DEL_ITEM=5;
 	public static int ADD_ITEM=6;
 	public static int Query_All=8;
+	public static int Query_ITEM=9;
 	/////
 	private String saveDir 	= 	Environment.getExternalStorageDirectory().getPath()+File.separator+"jyFile",
 			   saveFolder	=	"photo",

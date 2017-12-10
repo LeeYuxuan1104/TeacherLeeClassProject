@@ -416,10 +416,6 @@ public class VIteminfoActivity extends Activity implements OnClickListener{
 			}
 		}
 	
-	
-	
-	
-	
 	//	查询线程
 	// 定义的线程——自定义的线程内容;
 	public class MyThread extends Thread {

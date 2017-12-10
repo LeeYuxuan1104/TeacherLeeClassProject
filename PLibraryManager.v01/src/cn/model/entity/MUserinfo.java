@@ -146,6 +146,36 @@ public class MUserinfo {
 		}
 		return "fail";
 	}
+	public String queryUserinfoItem2(String uid){
+		String 				sql	 = "select * from user_info where uid="+uid;
+		ArrayList<String[]> list = mtDBTool.query(sql);
+		JSONArray   		array= new JSONArray();
+		if(list!=null){
+			int 	nSize	=	list.size();
+			if(nSize!=0){				
+				for(String[] items:list){
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("id", items[0]);
+						obj.put("uid", items[1]);
+						obj.put("uname", items[2]);
+						obj.put("upwd", items[3]);
+						obj.put("urole", items[4]);
+						obj.put("note", items[5]);
+						obj.put("img", items[6]);
+						obj.put("phone", items[7]);
+						obj.put("email", items[8]);
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					array.add(obj);
+				}
+				return array.toString();
+			}
+		}
+		return "fail";
+	}
 	public String delAll(){
 		String sql="delete from user_info";
 		if(this.mtDBTool.doDBUpdate(sql)!=0){

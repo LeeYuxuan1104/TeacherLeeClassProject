@@ -97,6 +97,12 @@ public class CCheckUserinfo extends HttpServlet{
 			mtConfig=	new MTConfig();
 			sResult	=	mtConfig.uploadMap(req, "user", uid);
 			break;
+		/// uid查询;
+		case 9:
+			uid		= 	new String(req.getParameter("uid").getBytes("ISO8859_1"),"utf-8");
+			userinfo=	new MUserinfo();
+			sResult	=	userinfo.queryUserinfoItem2(uid);
+			break;
 		default:
 			break;
 		}

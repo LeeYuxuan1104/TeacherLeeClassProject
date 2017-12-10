@@ -81,6 +81,12 @@ public class CCheckIteminfo extends HttpServlet{
 			mtConfig=	new MTConfig();
 			sResult	=	mtConfig.uploadMap(req, "item", iid);
 			break;
+		//	根据iid查询;
+		case 9:
+			iid		=	new String(req.getParameter("iid").getBytes("ISO8859_1"),"utf-8");
+			iteminfo=	new	MIteminfo(); 
+			sResult =	iteminfo.queryIteminfoItem2(iid);
+			break;
 		default:
 			break;
 		}

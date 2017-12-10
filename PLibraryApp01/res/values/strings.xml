@@ -19,6 +19,7 @@
     <string name="login">登录</string>
     <string name="resign">注册</string>
     <string name="search">搜索</string>
+    <string name="code">扫码</string>
     <string name="detail">详情</string>
     <string name="add">新增</string>
     <string name="upload">上传</string>
@@ -41,21 +42,21 @@
     <string name="iteminfo">书目</string>
     <string name="borrowinfo">借阅</string>
     <string name="stateinfo">状态</string>
-    
+     <string name="tip_null">为空</string>
     <string name="menuinfo">主菜单</string>
     <string name="uppage">上一页</string>
     <string name="downpage">下一页</string>
-    
+    <string name="scan_title">请圈进条形码/二维码</string>
     <string name="kid">大类编号</string>
     <string name="kname">大类名称</string>
     <string name="borrower">借阅人</string>
-    <string name="btime">借阅人</string>
+    <string name="btime">借阅时间</string>
     <string name="deadline">借阅期限</string>
     <string name="state">借阅状态</string>
     <string name="outstate">借出状态</string>
     <string name="instate">归还状态</string>
     <string name="in">归还</string>
-    
+    <string name="bid">借阅流水号</string>
     <string name="iid">书目编号</string>
     <string name="iname">书目名称</string>
     <string name="author">作者名称</string>
