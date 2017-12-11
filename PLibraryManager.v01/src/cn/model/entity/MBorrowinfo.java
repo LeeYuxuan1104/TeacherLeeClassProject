@@ -134,6 +134,13 @@ public class MBorrowinfo {
 		}
 		return "fail";
 	}
+	public String borrowBack(String bid,String state,String instate,String inimg){
+		String sql="update borrow_info set state='"+state+"',instate='"+instate+"',inimg='"+inimg+"' where bid='"+bid+"'";
+		if(this.mtDBTool.doDBUpdate(sql)!=0){
+			return "ok";
+		}
+		return "fail";
+	}
 	
 	public String delItem(String id){
 		String sql="delete from borrow_info where id="+id;

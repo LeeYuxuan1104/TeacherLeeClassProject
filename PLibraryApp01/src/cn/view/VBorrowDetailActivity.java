@@ -17,6 +17,7 @@ public class VBorrowDetailActivity extends Activity implements OnClickListener{
 	private Button	 vBack,vIn;
 	private TextView vTopic,vDetail;
 	private Context	 mContext;
+	private String   iid,bid;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +46,8 @@ public class VBorrowDetailActivity extends Activity implements OnClickListener{
 		@SuppressWarnings("unchecked")
 		Map<String, String> map=(Map<String, String>) bundle.getSerializable("item");
 
-		String bid		= 	map.get("bid");
-		String iid		=	map.get("iid");
+		bid				= 	map.get("bid");
+		iid				=	map.get("iid");
 		String iname	=	map.get("iname");
 		String borrower=	map.get("borrower");
 		String btime	=	map.get("btime");
@@ -79,6 +80,10 @@ public class VBorrowDetailActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.btnFunction:
 			Intent	intent=new Intent(mContext, VBorrowBackActivity.class);
+			Bundle	bundle=new Bundle();
+			bundle.putString("iid", iid);
+			bundle.putString("bid", bid);
+			intent.putExtras(bundle);
 			startActivity(intent);
 			break;
 		default:

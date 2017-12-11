@@ -27,7 +27,7 @@ import android.util.Log;
 
 import cn.camera.CameraManager;
 import cn.camera.PlanarYUVLuminanceSource;
-import cn.view.FlushActivity;
+import cn.view.VFlushActivity;
 
 import com.example.plibraryapp01.R;
 import com.google.zxing.BinaryBitmap;
@@ -44,10 +44,10 @@ final class DecodeHandler extends Handler {
 
   private static final String TAG = DecodeHandler.class.getSimpleName();
 
-  private final FlushActivity activity;
+  private final VFlushActivity activity;
   private final MultiFormatReader multiFormatReader;
 
-  DecodeHandler(FlushActivity activity, Hashtable<DecodeHintType, Object> hints) {
+  DecodeHandler(VFlushActivity activity, Hashtable<DecodeHintType, Object> hints) {
     multiFormatReader = new MultiFormatReader();
     multiFormatReader.setHints(hints);
     this.activity = activity;

@@ -40,7 +40,7 @@ import com.google.zxing.qrcode.QRCodeReader;
 
 
 
-public class FlushActivity extends Activity implements Callback {
+public class VFlushActivity extends Activity implements Callback {
 
 	private ViewfinderView 		 viewfinderView;//自定义的View绘图控件;
 	private boolean 			   hasSurface;	//判断surface的标志位;	
@@ -59,7 +59,7 @@ public class FlushActivity extends Activity implements Callback {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.flush);
+		setContentView(R.layout.act_vflush);
 		initView();
 	}
 	
@@ -72,19 +72,19 @@ public class FlushActivity extends Activity implements Callback {
 	}
 	//	退出
 	public void onClick_Back(View view){
-		FlushActivity.this.finish();
+		VFlushActivity.this.finish();
 	}
 
 	private void onResultHandler(String resultString, Bitmap bitmap){
 		if(TextUtils.isEmpty(resultString)){
-			Toast.makeText(FlushActivity.this, R.string.fail, Toast.LENGTH_SHORT).show();
+			Toast.makeText(VFlushActivity.this, R.string.fail, Toast.LENGTH_SHORT).show();
 			return;
 		}
 
 		myIntent=new Intent();
 		myIntent.putExtra("bid", resultString);
-		FlushActivity.this.setResult(1,myIntent);
-		FlushActivity.this.finish();
+		VFlushActivity.this.setResult(1,myIntent);
+		VFlushActivity.this.finish();
 	}
 
 	public Result scanningImage(String path) {
@@ -158,11 +158,11 @@ public class FlushActivity extends Activity implements Callback {
 		inactivityTimer.onActivity();
 		String resultString = result.getText();
 		if (resultString.equals("")) {
-			Toast.makeText(FlushActivity.this, R.string.tip_null, Toast.LENGTH_SHORT).show();
+			Toast.makeText(VFlushActivity.this, R.string.tip_null, Toast.LENGTH_SHORT).show();
 		}else {
 			onResultHandler(resultString, barcode);
 		}
-		FlushActivity.this.finish();
+		VFlushActivity.this.finish();
 	}
 	
 	private void initCamera(SurfaceHolder surfaceHolder) {

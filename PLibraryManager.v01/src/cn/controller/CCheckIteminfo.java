@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import cn.model.entity.MIteminfo;
+import cn.model.entity.MStateinfo;
 import cn.model.tool.MTConfig;
 
 public class CCheckIteminfo extends HttpServlet{
@@ -19,6 +20,7 @@ public class CCheckIteminfo extends HttpServlet{
 		/////
 		PrintWriter 	pWriter = 	resp.getWriter();
 		MIteminfo		iteminfo=	null;
+		MStateinfo		stateinfo=	null;
 		MTConfig		mtConfig=	null;
 		int 			operType=	Integer.parseInt(req.getParameter("opertype"));
 		String  		sResult =   "fail";
@@ -68,7 +70,10 @@ public class CCheckIteminfo extends HttpServlet{
 			img		=	new String(req.getParameter("img").getBytes("ISO8859_1"),"utf-8");
 			
 			iteminfo=   new MIteminfo(iid, iname, note, author, press, ptime, count, kid, img);
+			stateinfo=	new MStateinfo(iid, count, count, "null");
+			stateinfo.insertStateinfo();
 			sResult =	iteminfo.insertIteminfo();
+
 			break;
 		case 7:
 			id		=	new String(req.getParameter("id").getBytes("ISO8859_1"),"utf-8");

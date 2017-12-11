@@ -97,6 +97,8 @@
             android:id="@+id/etbtime"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
             android:inputType="text"
             android:hint="@string/btime"
             />
@@ -104,6 +106,8 @@
             android:id="@+id/etdeadline"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
             android:inputType="text"
             android:hint="@string/deadline"
             />

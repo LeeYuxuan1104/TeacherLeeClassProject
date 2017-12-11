@@ -15,15 +15,26 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/borrow" />
+        android:text="@string/in" />
 
     <LinearLayout
         android:id="@+id/layMid"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/includeTop"
         android:orientation="vertical" >
-
+		<Spinner 
+		    android:id="@+id/spinstate"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:prompt="@string/instate"
+		    />
+		<Button 
+		    android:id="@+id/btnPhoto"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/photo"
+		    />
     </LinearLayout>
 
 </RelativeLayout>

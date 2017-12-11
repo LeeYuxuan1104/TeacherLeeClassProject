@@ -136,7 +136,7 @@ public class VStateinfoActivity extends Activity implements OnClickListener{
 		
 		
 		vBack.setText(R.string.back);
-		vTopic.setText(R.string.kindinfo);
+		vTopic.setText(R.string.stateinfo);
 		vBack.setOnClickListener(this);
 		vSearch.setOnClickListener(this);
 		vUpPage.setOnClickListener(this);

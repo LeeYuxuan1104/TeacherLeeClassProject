@@ -114,14 +114,16 @@
         </activity>
         <activity
             android:name="cn.view.VStateinfoActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar" 
+            android:screenOrientation="landscape"
+            >
         </activity>
         <activity
             android:name="cn.view.VStateDetailActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
-            android:name="cn.view.FlushActivity"
+            android:name="cn.view.VFlushActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
     </application>

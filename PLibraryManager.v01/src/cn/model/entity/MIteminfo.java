@@ -42,7 +42,7 @@ public class MIteminfo {
 		if(mtDBTool==null){			
 			mtDBTool=new MTDataBaseTool();
 		}
-	}
+	}	
 	//	插入用户信息的数据;
 	public String insertIteminfo(){
 		String sql=
@@ -122,7 +122,7 @@ public class MIteminfo {
 		return "fail";
 	}
 	public String queryIteminfoItem2(String iid){
-		String 				sql	 = "select * from item_book_info where iid="+iid;
+		String 				sql	 = "select * from item_book_info where iid='"+iid+"'";
 		ArrayList<String[]> list = mtDBTool.query(sql);
 		JSONArray   		array= new JSONArray();
 		if(list!=null){

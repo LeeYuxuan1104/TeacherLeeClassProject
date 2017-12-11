@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.model.entity.MBorrowinfo;
+import cn.model.entity.MStateinfo;
+import cn.model.tool.MTConfig;
 
 
 public class CCheckBorrowinfo extends HttpServlet{
@@ -20,7 +22,9 @@ public class CCheckBorrowinfo extends HttpServlet{
 		/////
 		PrintWriter 	pWriter = 	resp.getWriter();
 		MBorrowinfo		borrowinfo= null;
-		int 			operType=	Integer.parseInt(req.getParameter("opertype"));
+		MTConfig		mtConfig = null;
+		MStateinfo		stateinfo= null;
+		int 			operType=	Integer.parseInt(req.getParameter("opertype")),ccount=0;
 		String  		sResult =   "fail";
 		String 			id,bid,iid,iname,borrower,btime,deadline,state,outstate,instate,inimg=null;
 		/////
@@ -70,12 +74,43 @@ public class CCheckBorrowinfo extends HttpServlet{
 			inimg	=	new String(req.getParameter("inimg").getBytes("ISO8859_1"),"utf-8");
 			borrowinfo=new MBorrowinfo(bid, iid, iname, borrower, btime, deadline, state, outstate, instate, inimg);
 			sResult =	borrowinfo.insertBorrowinfo();
+			stateinfo = new MStateinfo();
+			ccount	=	Integer.parseInt(stateinfo.getCcount(iid));
+			if(ccount>0){				
+				ccount--;
+				stateinfo.updateState(ccount+"", iid);
+			}
+
 			break;
 		///	单条查询;
 		case 7:
 			id		=	new String(req.getParameter("id").getBytes("ISO8859_1"),"utf-8");
 			borrowinfo= new MBorrowinfo(); 
 			sResult =	borrowinfo.queryBorrowinfoItem(id);
+			break;
+		///	状态修改;
+		case 8:
+			bid		=	new String(req.getParameter("bid").getBytes("ISO8859_1"),"utf-8");
+			iid		=	new String(req.getParameter("iid").getBytes("ISO8859_1"),"utf-8");
+			state	=	new String(req.getParameter("state").getBytes("ISO8859_1"),"utf-8");
+			instate	=	new String(req.getParameter("instate").getBytes("ISO8859_1"),"utf-8");
+			inimg	=	new String(req.getParameter("inimg").getBytes("ISO8859_1"),"utf-8");
+			borrowinfo=new MBorrowinfo();
+			sResult=borrowinfo.borrowBack(bid, state, instate, inimg);
+			stateinfo = new MStateinfo();
+			int count= Integer.parseInt(stateinfo.getCount(iid));
+			ccount	=	Integer.parseInt(stateinfo.getCcount(iid));
+			if(ccount<count){				
+				ccount++;
+			}
+			stateinfo.updateState(ccount+"", iid);
+
+			break;
+		///	图片上传;
+		case 9:
+			bid		= 	new String(req.getParameter("bid").getBytes("ISO8859_1"),"utf-8");
+			mtConfig=	new MTConfig();
+			sResult	=	mtConfig.uploadMap(req, "borrow", bid);
 			break;
 		default:
 			break;

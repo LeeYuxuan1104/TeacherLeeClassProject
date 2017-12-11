@@ -30,7 +30,7 @@ import android.util.Log;
 
 
 import cn.camera.CameraManager;
-import cn.view.FlushActivity;
+import cn.view.VFlushActivity;
 import cn.view.extra.ViewfinderResultPointCallback;
 
 import com.example.plibraryapp01.R;
@@ -46,7 +46,7 @@ public final class CaptureActivityHandler extends Handler {
 
   private static final String TAG = CaptureActivityHandler.class.getSimpleName();
 
-  private final FlushActivity activity;
+  private final VFlushActivity activity;
   private final DecodeThread decodeThread;
   private State state;
 
@@ -56,7 +56,7 @@ public final class CaptureActivityHandler extends Handler {
     DONE
   }
 
-  public CaptureActivityHandler(FlushActivity activity, Vector<BarcodeFormat> decodeFormats,
+  public CaptureActivityHandler(VFlushActivity activity, Vector<BarcodeFormat> decodeFormats,
       String characterSet) {
     this.activity = activity;
     decodeThread = new DecodeThread(activity, decodeFormats, characterSet,

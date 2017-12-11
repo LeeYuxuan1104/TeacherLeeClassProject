@@ -147,7 +147,7 @@ public class MUserinfo {
 		return "fail";
 	}
 	public String queryUserinfoItem2(String uid){
-		String 				sql	 = "select * from user_info where uid="+uid;
+		String 				sql	 = "select * from user_info where uid='"+uid+"'";
 		ArrayList<String[]> list = mtDBTool.query(sql);
 		JSONArray   		array= new JSONArray();
 		if(list!=null){

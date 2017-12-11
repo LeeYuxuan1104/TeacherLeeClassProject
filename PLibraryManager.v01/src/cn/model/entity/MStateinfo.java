@@ -33,6 +33,17 @@ public class MStateinfo {
 			mtDBTool=new MTDataBaseTool();
 		}
 	}
+	//	查询书目的总数;
+	private int queryCount(String field,String iid){
+		int result=0;
+		String sql="select "+field+" from book_state_info where iid='"+iid+"'";
+		ArrayList<String[]> list = mtDBTool.query(sql);
+		for(String[] items:list){
+			String item	=items[0];
+			result		=Integer.parseInt(item);
+		}
+		return result;
+	} 
 	//	插入用户信息的数据;
 	public String insertStateinfo(){
 		String sql=
@@ -117,6 +128,14 @@ public class MStateinfo {
 		}
 		return "fail";
 	}
+	public String updateState(String ccount,String iid){
+		String sql="update book_state_info set ccount='"+ccount+"' where iid='"+iid+"'";
+		if(this.mtDBTool.doDBUpdate(sql)!=0){
+			return "ok";
+		}
+		return "fail";
+	}
+	
 	//数据的属性的抓取;
 	public MTDataBaseTool getMtDBTool() {
 		return mtDBTool;
@@ -137,16 +156,18 @@ public class MStateinfo {
 		this.iid = iid;
 	}
 
-	public String getCount() {
-		return count;
+	public String getCount(String iid) {
+		int n=queryCount("count",iid);
+		return n+"";
 	}
 
 	public void setCount(String count) {
 		this.count = count;
 	}
 
-	public String getCcount() {
-		return ccount;
+	public String getCcount(String iid) {
+		int n=queryCount("ccount",iid);
+		return n+"";
 	}
 
 	public void setCcount(String ccount) {

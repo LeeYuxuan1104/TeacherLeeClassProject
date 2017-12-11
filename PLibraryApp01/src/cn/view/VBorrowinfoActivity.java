@@ -341,7 +341,6 @@ public class VBorrowinfoActivity extends Activity implements OnClickListener{
 		default:
 			break;
 		}
-		
 	}
 	
 	//	查询线程
@@ -418,7 +417,7 @@ public class VBorrowinfoActivity extends Activity implements OnClickListener{
 							String btime	=	obj.getString("btime");
 							String deadline=	obj.getString("deadline");
 							String state	=	obj.getString("state");
-							String outstate=	obj.getString("outstate");
+							String outstate =	obj.getString("outstate");
 							String instate	=	obj.getString("instate");
 							String inimg	=	obj.getString("inimg");
 							
@@ -437,7 +436,7 @@ public class VBorrowinfoActivity extends Activity implements OnClickListener{
 							map.put("instate", instate);
 							map.put("inimg", inimg);
 							
-							map.put("content","流水号:"+bid+" | 借阅人:"+borrower+" | 借阅时间:"+btime+" | 借阅状态:"+state);
+							map.put("content",bid+"  |  "+borrower+"  |  "+btime+"  |  "+state);
 							listdata.add(map);
 							i++;
 						} catch (Exception e) {
