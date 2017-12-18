@@ -90,6 +90,37 @@ public class MIteminfo {
 		}
 		return "fail";
 	}
+	//  显示所有图书
+	public String queryIteminfoItem() {
+		String 				sql	 = "select * from item_book_info ";
+		ArrayList<String[]> list = mtDBTool.query(sql);
+		JSONArray   		array= new JSONArray();
+		if(list!=null){
+			int 	nSize	=	list.size();
+			if(nSize!=0){				
+				for(String[] items:list){
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("id", items[0]);
+						obj.put("iid", items[1]);
+						obj.put("iname", items[2]);
+						obj.put("note", items[3]);
+						obj.put("author", items[4]);
+						obj.put("press", items[5]);
+						obj.put("ptime", items[6]);
+						obj.put("count", items[7]);
+						obj.put("kid", items[8]);
+						obj.put("img", items[9]);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					array.add(obj);
+				}
+				return array.toString();
+			}
+		}
+		return "fail";
+	}
 	//	翻页显示信息;
 	public String queryIteminfoItem(String id){
 		String 				sql	 = "select * from item_book_info where id="+id;
@@ -122,7 +153,7 @@ public class MIteminfo {
 		return "fail";
 	}
 	public String queryIteminfoItem2(String iid){
-		String 				sql	 = "select * from item_book_info where iid='"+iid+"'";
+		String 				sql	 = "select item_book_info.*,ifnull(aa.state,'1') as state from item_book_info left join (select state,iid from borrow_info where state='0') aa on item_book_info.iid=aa.iid where item_book_info.iid="+iid;
 		ArrayList<String[]> list = mtDBTool.query(sql);
 		JSONArray   		array= new JSONArray();
 		if(list!=null){
@@ -141,10 +172,12 @@ public class MIteminfo {
 						obj.put("count", items[7]);
 						obj.put("kid", items[8]);
 						obj.put("img", items[9]);
+						obj.put("state", items[10]);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 					array.add(obj);
+					System.out.println(array.toString());
 				}
 				return array.toString();
 			}

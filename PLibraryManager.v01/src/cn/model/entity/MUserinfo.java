@@ -50,10 +50,18 @@ public class MUserinfo {
 		}
 		return "fail";
 	}
-	
+	//  修改用户信息
+	public String updateUserinfo(String uid,String phone,String email,String note){
+		String sql=
+		"update user_info set phone='"+phone+"',email='"+email+"',note='"+note+"' WHERE uid="+uid;
+		if(this.mtDBTool.doDBUpdate(sql)!=0){
+			return "ok";
+		}
+		return "fail";
+	}
 	public String checkUserinfo(String uid,String pwd){
 		String 				sql	 = "select * from user_info where uid='"+uid+"' and upwd='"+pwd+"'";
-		ArrayList<String[]> list = mtDBTool.query(sql);
+		ArrayList<String[]> list = mtDBTool.query(sql); 
 		if(list!=null){			
 			int 			nsize= list.size();
 			if(nsize>0){
@@ -69,6 +77,7 @@ public class MUserinfo {
 					obj.put("img", item[6]);
 					obj.put("phone", item[7]);
 					obj.put("email", item[8]);
+					obj.put("id", item[0]);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -78,7 +87,6 @@ public class MUserinfo {
 		}
 		return "fail";
 	}
-
 	//	翻页显示信息;
 	public String queryUserinfoByPageAndCondition(int nCurrentPage,int nCountLimit,String pkind,String value){
 		int nCPage=nCurrentPage-1;
@@ -188,6 +196,40 @@ public class MUserinfo {
 		String sql="delete from user_info where id="+id;
 		if(this.mtDBTool.doDBUpdate(sql)!=0){
 			return "ok";
+		}
+		return "fail";
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public String checkUserinfo(){
+		String 				sql	 = "select * from user_info ";
+		ArrayList<String[]> list = mtDBTool.query(sql); 
+		JSONArray   		array= new JSONArray();
+		if(list!=null){
+			int 	nSize	=	list.size();
+			if(nSize!=0){				
+				for(String[] items:list){
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("id", items[0]);
+						obj.put("uid", items[1]);
+						obj.put("uname", items[2]);
+						obj.put("upwd", items[3]);
+						obj.put("urole", items[4]);
+						obj.put("note", items[5]);
+						obj.put("img", items[6]);
+						obj.put("phone", items[7]);
+						obj.put("email", items[8]);
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					array.add(obj);
+				}
+				return array.toString();
+			}
 		}
 		return "fail";
 	}

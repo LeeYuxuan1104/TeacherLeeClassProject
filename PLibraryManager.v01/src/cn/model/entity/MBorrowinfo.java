@@ -127,6 +127,72 @@ public class MBorrowinfo {
 		}
 		return "fail";
 	}
+	// 查找所有借书记录
+	public String queryBorrowinfoItem(){
+		String 				sql	 = "select * from borrow_info order by id desc";
+		ArrayList<String[]> list = mtDBTool.query(sql);
+		JSONArray   		array= new JSONArray();
+		if(list!=null){
+			int 	nSize	=	list.size();
+			if(nSize!=0){				
+				for(String[] items:list){
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("id", items[0]);
+						obj.put("bid", items[1]);
+						obj.put("iid", items[2]);
+						obj.put("iname", items[3]);
+						obj.put("borrower", items[4]);
+						obj.put("btime", items[5]);
+						obj.put("deadline", items[6]);
+						obj.put("state", items[7]);
+						obj.put("outstate", items[8]);
+						obj.put("instate", items[9]);
+						obj.put("inimg", items[10]);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					array.add(obj);
+				}
+				return array.toString();
+			}
+		}
+		return "fail";
+	}
+	// 查找用户的所有借书
+	public String queryBorrowinfoItemByU(String name){
+		String 				sql	 = "select item_book_info.*,bid,btime,borrow_info.id as pid from borrow_info,item_book_info where borrower='"+name+"' AND borrow_info.iid=item_book_info.iid order by pid DESC;";
+		ArrayList<String[]> list = mtDBTool.query(sql);
+		JSONArray   		array= new JSONArray();
+		if(list!=null){
+			int 	nSize	=	list.size();
+			if(nSize!=0){				
+				for(String[] items:list){
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("id", items[0]);
+						obj.put("iid", items[1]);
+						obj.put("iname", items[2]);
+						obj.put("note", items[3]);
+						obj.put("author", items[4]);
+						obj.put("press", items[5]);
+						obj.put("ptime", items[6]);
+						obj.put("count", items[7]);
+						obj.put("kid", items[8]);
+						obj.put("img", items[9]);
+						obj.put("bid", items[10]);
+						obj.put("btime", items[11]);
+						obj.put("pid", items[12]);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					array.add(obj);
+				}
+				return array.toString();
+			}
+		}
+		return "fail";
+	}
 	public String delAll(){
 		String sql="delete from borrow_info";
 		if(this.mtDBTool.doDBUpdate(sql)!=0){
@@ -141,13 +207,24 @@ public class MBorrowinfo {
 		}
 		return "fail";
 	}
-	
+	/**
+	 * @author loh
+	 * @param id
+	 * @return
+	 */
+	public String borrowBackById(String id,String state,String instate,String inimg){
+		String sql="update borrow_info set state='"+state+"',instate='"+instate+"',inimg='"+inimg+"' where id='"+id+"'";
+		if(this.mtDBTool.doDBUpdate(sql)!=0){
+			return "ok";
+		}
+		return "fail";
+	}
 	public String delItem(String id){
 		String sql="delete from borrow_info where id="+id;
 		if(this.mtDBTool.doDBUpdate(sql)!=0){
 			return "ok";
 		}
-		return "fail";
+		return "fail"; 
 	}
 	//数据的属性的抓取;	
 	public MTDataBaseTool getMtDBTool() {

@@ -112,10 +112,45 @@ public class CCheckBorrowinfo extends HttpServlet{
 			mtConfig=	new MTConfig();
 			sResult	=	mtConfig.uploadMap(req, "borrow", bid);
 			break;
+		/**根据用户名查找借阅书籍
+		 * @author loh
+		 */
+		case 10:
+			borrower=new String(req.getParameter("borrower").getBytes("ISO8859_1"),"utf-8");
+			borrowinfo=new MBorrowinfo();
+			sResult	= borrowinfo.queryBorrowinfoItemByU(borrower);
+			break;
+		/**查找所有借阅记录
+		* 
+		*/
+		case 11:
+			borrowinfo=new MBorrowinfo();
+			sResult	= borrowinfo.queryBorrowinfoItem();
+			break;
+		/**根据id还书
+		* 
+		*/
+		case 12:
+			id		=	new String(req.getParameter("id").getBytes("ISO8859_1"),"utf-8");
+			iid		=	new String(req.getParameter("iid").getBytes("ISO8859_1"),"utf-8");
+			state	=	new String(req.getParameter("state").getBytes("ISO8859_1"),"utf-8");
+			instate	=	new String(req.getParameter("instate").getBytes("ISO8859_1"),"utf-8");
+			inimg	=	new String(req.getParameter("inimg").getBytes("ISO8859_1"),"utf-8");
+			borrowinfo=new MBorrowinfo();
+			sResult=borrowinfo.borrowBackById(id, state, instate, inimg);
+			stateinfo = new MStateinfo();
+			count= Integer.parseInt(stateinfo.getCount(iid));
+			ccount	=	Integer.parseInt(stateinfo.getCcount(iid));
+			if(ccount<count){				
+				ccount++;
+			}
+			stateinfo.updateState(ccount+"", iid);
+
+			break;
 		default:
 			break;
 		}
-
+		
 		pWriter.print(sResult)	;
 		pWriter.flush();
 		pWriter.close();

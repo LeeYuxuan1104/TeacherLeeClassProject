@@ -103,6 +103,20 @@ public class CCheckUserinfo extends HttpServlet{
 			userinfo=	new MUserinfo();
 			sResult	=	userinfo.queryUserinfoItem2(uid);
 			break;
+		/// 信息修改
+		case 10:
+			uid		= 	new String(req.getParameter("uid").getBytes("ISO8859_1"),"utf-8");
+			phone		= 	new String(req.getParameter("phone").getBytes("ISO8859_1"),"utf-8");
+			email		= 	new String(req.getParameter("email").getBytes("ISO8859_1"),"utf-8");
+			note		= 	new String(req.getParameter("note").getBytes("ISO8859_1"),"utf-8");
+			userinfo=	new MUserinfo();
+			sResult	=	userinfo.updateUserinfo(uid, phone, email, note);
+			break;
+		///	显示所有用户信息;
+		case 11:
+			userinfo=	new MUserinfo();
+			sResult =	userinfo.checkUserinfo();
+			break;
 		default:
 			break;
 		}

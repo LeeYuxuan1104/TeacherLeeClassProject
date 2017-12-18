@@ -92,6 +92,16 @@ public class CCheckIteminfo extends HttpServlet{
 			iteminfo=	new	MIteminfo(); 
 			sResult =	iteminfo.queryIteminfoItem2(iid);
 			break;
+		case 10:
+			///	显示前10条信息;
+			//int nCurrentPage=Integer.parseInt(req.getParameter("currentpage"));
+			//int nCountLimit =Integer.parseInt(req.getParameter("countlimit"));
+			//String pkind	=new String(req.getParameter("pkind").getBytes("ISO8859_1"),"utf-8");
+			//String value	=new String(req.getParameter("value").getBytes("ISO8859_1"),"utf-8");
+			iteminfo=	new MIteminfo();
+			sResult =	iteminfo.queryIteminfoItem();
+			System.out.println("s="+sResult);
+			break;
 		default:
 			break;
 		}

@@ -16,7 +16,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>user_info</servlet-name>
-    <url-pattern>/user_info</url-pattern>
+    <url-pattern>/api/user_info</url-pattern>
   </servlet-mapping>
   
   <!-- 大类书信息的操作处理-->
@@ -35,7 +35,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>item_info</servlet-name>
-    <url-pattern>/item_info</url-pattern>
+    <url-pattern>/api/item_info</url-pattern>
   </servlet-mapping>
  <!-- 借阅信息的操作处理-->
   <servlet>
@@ -44,7 +44,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>borrow_info</servlet-name>
-    <url-pattern>/borrow_info</url-pattern>
+    <url-pattern>/api/borrow_info</url-pattern>
   </servlet-mapping>
   <!-- 书目状态的操作处理-->
   <servlet>
