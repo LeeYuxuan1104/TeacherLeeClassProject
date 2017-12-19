@@ -94,12 +94,27 @@ public class CCheckIteminfo extends HttpServlet{
 			break;
 		case 10:
 			///	显示前10条信息;
-			//int nCurrentPage=Integer.parseInt(req.getParameter("currentpage"));
-			//int nCountLimit =Integer.parseInt(req.getParameter("countlimit"));
+			nCurrentPage=Integer.parseInt(req.getParameter("currentpage"));
+			nCountLimit =Integer.parseInt(req.getParameter("countlimit"));
 			//String pkind	=new String(req.getParameter("pkind").getBytes("ISO8859_1"),"utf-8");
 			//String value	=new String(req.getParameter("value").getBytes("ISO8859_1"),"utf-8");
 			iteminfo=	new MIteminfo();
-			sResult =	iteminfo.queryIteminfoItem();
+			sResult =	iteminfo.queryIteminfoItem(nCurrentPage,nCountLimit);
+			break;
+		case 11:
+			///	显示书籍总数;
+			//String pkind	=new String(req.getParameter("pkind").getBytes("ISO8859_1"),"utf-8");
+			//String value	=new String(req.getParameter("value").getBytes("ISO8859_1"),"utf-8");
+			iteminfo=	new MIteminfo();
+			sResult =	iteminfo.queryItemNum();
+			System.out.println("s="+sResult);
+			break;
+		case 12:
+			///	显示书籍总数;
+			pkind	=new String(req.getParameter("pkind").getBytes("ISO8859_1"),"utf-8");
+			value	=new String(req.getParameter("value").getBytes("ISO8859_1"),"utf-8");
+			iteminfo=	new MIteminfo();
+			sResult =	iteminfo.queryItemNum(pkind,value);
 			System.out.println("s="+sResult);
 			break;
 		default:

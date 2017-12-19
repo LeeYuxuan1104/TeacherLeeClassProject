@@ -58,10 +58,46 @@ public class MIteminfo {
 		int nCPage=nCurrentPage-1;
 		int nItem =nCPage*nCountLimit;
 		String where=" where "+pkind+" like '%"+value+"%' limit "+nItem+","+nCountLimit;
+		
 		if(value.equals("null")){
 			where=" limit "+nItem+","+nCountLimit;
 		}
 		String 				sql	 = "select * from item_book_info "+where;
+		System.out.println(sql);
+		ArrayList<String[]> list = mtDBTool.query(sql);
+		JSONArray   		array= new JSONArray();
+		System.out.println(list.toString());
+		if(list!=null){
+			int 	nSize	=	list.size();
+			if(nSize!=0){				
+				for(String[] items:list){
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("id", items[0]);
+						obj.put("iid", items[1]);
+						obj.put("iname", items[2]);
+						obj.put("note", items[3]);
+						obj.put("author", items[4]);
+						obj.put("press", items[5]);
+						obj.put("ptime", items[6]);
+						obj.put("count", items[7]);
+						obj.put("kid", items[8]);
+						obj.put("img", items[9]);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					array.add(obj);
+				}
+				return array.toString();
+			}
+		}
+		return "fail";
+	}
+	//  显示所有图书
+	public String queryIteminfoItem(int nCurrentPage,int nCountLimit) {
+		int nCPage=nCurrentPage-1;
+		int nItem =nCPage*nCountLimit;
+		String 				sql	 = "select * from item_book_info limit "+nItem+","+nCountLimit;
 		ArrayList<String[]> list = mtDBTool.query(sql);
 		JSONArray   		array= new JSONArray();
 		if(list!=null){
@@ -90,9 +126,8 @@ public class MIteminfo {
 		}
 		return "fail";
 	}
-	//  显示所有图书
-	public String queryIteminfoItem() {
-		String 				sql	 = "select * from item_book_info ";
+	public String queryItemNum(){
+		String 				sql	 = "select count(*) as number from item_book_info";
 		ArrayList<String[]> list = mtDBTool.query(sql);
 		JSONArray   		array= new JSONArray();
 		if(list!=null){
@@ -101,16 +136,29 @@ public class MIteminfo {
 				for(String[] items:list){
 					JSONObject obj = new JSONObject();
 					try {
-						obj.put("id", items[0]);
-						obj.put("iid", items[1]);
-						obj.put("iname", items[2]);
-						obj.put("note", items[3]);
-						obj.put("author", items[4]);
-						obj.put("press", items[5]);
-						obj.put("ptime", items[6]);
-						obj.put("count", items[7]);
-						obj.put("kid", items[8]);
-						obj.put("img", items[9]);
+						obj.put("number", items[0]);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					array.add(obj);
+				}
+				return array.toString();
+			}
+		}
+		return "fail";
+	}
+	public String queryItemNum(String pkind,String value){
+		String where=" where "+pkind+" like '%"+value+"%'";
+		String 				sql	 = "select count(*) as number from item_book_info"+where;
+		ArrayList<String[]> list = mtDBTool.query(sql);
+		JSONArray   		array= new JSONArray();
+		if(list!=null){
+			int 	nSize	=	list.size();
+			if(nSize!=0){				
+				for(String[] items:list){
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("number", items[0]);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
