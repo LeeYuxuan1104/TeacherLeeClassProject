@@ -201,7 +201,10 @@ public class MIteminfo {
 		return "fail";
 	}
 	public String queryIteminfoItem2(String iid){
-		String 				sql	 = "select item_book_info.*,ifnull(aa.state,'1') as state from item_book_info left join (select state,iid from borrow_info where state='0') aa on item_book_info.iid=aa.iid where item_book_info.iid="+iid;
+		System.out.println(iid);
+		
+		String 				sql	 = "select item_book_info.*,ifnull(aa.state,'1') as state from item_book_info left join (select state,iid from borrow_info where state='0') aa on item_book_info.iid=aa.iid where item_book_info.iid='"+iid+"'";
+		System.out.println(sql);
 		ArrayList<String[]> list = mtDBTool.query(sql);
 		JSONArray   		array= new JSONArray();
 		if(list!=null){
@@ -223,7 +226,7 @@ public class MIteminfo {
 						obj.put("state", items[10]);
 					} catch (Exception e) {
 						e.printStackTrace();
-					}
+					} 
 					array.add(obj);
 					System.out.println(array.toString());
 				}

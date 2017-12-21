@@ -11,11 +11,11 @@ import java.util.ArrayList;
 
 public class MTDataBaseTool {
 	private String driver 	= "com.mysql.jdbc.Driver";
-	private String dbName 	= "mydb";
-	private String password = "root";
+	private String dbName 	= "angular";
+	private String password = "123456";
 	private String userName = "root";
-	private String url 		= "jdbc:mysql://localhost:3306/" + dbName;
-	
+//	private String url 		= "jdbc:mysql://localhost:3306/" + dbName;
+	private String url 		= "jdbc:mysql://39.106.70.111:3306/" + dbName;
 	public MTDataBaseTool() {
 	
 	}
@@ -36,6 +36,7 @@ public class MTDataBaseTool {
 		try {
 	       Class.forName(driver);
 	       conn= DriverManager.getConnection(url, userName, password);
+	       System.out.println("ss");
 	    } catch (Exception e) {
 	       return null;
 	    }
@@ -87,7 +88,7 @@ public class MTDataBaseTool {
 			if(conn!=null){				
 				conn.close();
 			}
-		} catch (SQLException e) {
+		} catch (SQLException e) { 
 			return null;
 		}
 		return list;

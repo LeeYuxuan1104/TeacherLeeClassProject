@@ -26,7 +26,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>kind_info</servlet-name>
-    <url-pattern>/kind_info</url-pattern>
+    <url-pattern>/api/kind_info</url-pattern>
   </servlet-mapping>
    <!-- 小类书信息的操作处理-->
   <servlet>
@@ -53,6 +53,6 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>state_info</servlet-name>
-    <url-pattern>/state_info</url-pattern>
+    <url-pattern>/api/state_info</url-pattern>
   </servlet-mapping>
 </web-app>
