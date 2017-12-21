@@ -53,7 +53,7 @@ public class MUserinfo {
 	//  修改用户信息
 	public String updateUserinfo(String uid,String phone,String email,String note){
 		String sql=
-		"update user_info set phone='"+phone+"',email='"+email+"',note='"+note+"' WHERE uid="+uid;
+		"update user_info set phone='"+phone+"',email='"+email+"',note='"+note+"' WHERE uid='"+uid+"'";
 		if(this.mtDBTool.doDBUpdate(sql)!=0){
 			return "ok";
 		}
